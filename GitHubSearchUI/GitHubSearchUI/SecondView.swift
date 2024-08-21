@@ -8,9 +8,36 @@ import SwiftUI
 
 struct UserDetailView: View {
     let user: User
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
+            // Custom Title Bar
+            HStack {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
+                    }
+                    .foregroundColor(.blue)
+                }
+
+                Spacer()
+
+                Text("Details")
+                    .font(.headline)
+
+                Spacer()
+
+                // Placeholder to balance the Back button
+                Spacer()
+                    .frame(width: 60)
+            }
+            .padding(.top, 10)
+            .padding(.horizontal)
+
             // User Avatar
             AsyncImage(url: URL(string: user.avatarUrl)) { image in
                 image
@@ -23,9 +50,6 @@ struct UserDetailView: View {
             }
             .frame(width: 150, height: 150)
             .padding(.top, 20)
-            .navigationTitle("Details")
-            .navigationBarTitleDisplayMode(.inline)
-                       
 
             // User Login
             Text(user.login)
@@ -43,12 +67,11 @@ struct UserDetailView: View {
                     .cornerRadius(10)
                     .shadow(radius: 5) // 3D effect
             }
-            .padding(.top, 20)
+            .padding(.top, 10)
 
             Spacer()
         }
         .padding()
-       
     }
 
     private func openUserProfile() {
@@ -57,4 +80,5 @@ struct UserDetailView: View {
         }
     }
 }
+
 

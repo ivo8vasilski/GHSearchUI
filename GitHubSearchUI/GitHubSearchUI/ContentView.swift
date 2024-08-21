@@ -27,7 +27,7 @@ struct ContentView: View {
                         Spacer()
                     }
                     .padding(.horizontal)
-                    
+
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(manager.recentSearches, id: \.self) { search in
@@ -48,27 +48,28 @@ struct ContentView: View {
 
                 // List of Users
                 List(manager.users) { user in
-                    NavigationLink(destination: UserDetailView(user: user)) {
-                        HStack {
-                            // User Avatar Thumbnail
-                            AsyncImage(url: URL(string: user.avatarUrl)) { image in
-                                image.resizable()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .frame(width: 50, height: 50)
-                            .clipShape(Circle())
-
-                            // User Login
-                            Text(user.login)
-                                .font(.headline)
+                    HStack {
+                        // User Avatar Thumbnail
+                        AsyncImage(url: URL(string: user.avatarUrl)) { image in
+                            image.resizable()
+                        } placeholder: {
+                            ProgressView()
                         }
+                        .frame(width: 50, height: 50)
+                        .clipShape(Circle())
+
+                        // User Login
+                        Text(user.login)
+                            .font(.headline)
+                    }
+                    .onTapGesture {
+                        selectedUser = user
                     }
                     .onAppear {
                         manager.loadMoreUsersIfNeeded(currentUser: user)
                     }
                 }
-                .navigationTitle("GitHub Search")g
+                .navigationTitle("GitHub Search")
                 .overlay(
                     Group {
                         if manager.isLoading {
@@ -89,6 +90,12 @@ struct ContentView: View {
                     )
                 }
             }
+            .sheet(item: $selectedUser) { user in
+                NavigationView {
+                    UserDetailView(user: user)
+                }
+            }
         }
     }
 }
+
