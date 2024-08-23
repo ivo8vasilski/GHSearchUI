@@ -49,13 +49,13 @@ struct ContentView: View {
                 // List of Users
                 List(manager.users) { user in
                     HStack {
-                        // User Avatar Thumbnail
+                        // User Avatar Thumbnail with Increased Size
                         AsyncImage(url: URL(string: user.avatarUrl)) { image in
                             image.resizable()
                         } placeholder: {
                             ProgressView()
                         }
-                        .frame(width: 50, height: 50)
+                        .frame(width: 70, height: 70) // Increased from 50x50 to 70x70
                         .clipShape(Circle())
 
                         // User Login

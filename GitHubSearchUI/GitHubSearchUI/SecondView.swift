@@ -65,6 +65,26 @@ struct UserDetailView: View {
                 .fontWeight(.bold)
                 .padding(.top, 10)
 
+            // Follower and Following Counts
+            HStack(spacing: 20) {
+                VStack {
+                    Text("\(user.followers_url)")
+                        .font(.headline)
+                    Text("Followers")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+                
+                VStack {
+                    Text("\(user.following_url)")
+                        .font(.headline)
+                    Text("Following")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+            }
+            .padding(.top, 5)
+
             // Add spacing before the buttons
             Spacer()
                 .frame(height: 30) // Adjust the height as needed

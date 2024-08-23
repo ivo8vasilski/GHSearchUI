@@ -12,6 +12,8 @@ struct User: Decodable, Identifiable {
     let id = UUID()
     let login: String
     let avatarUrl: String
+    let followers_url: String
+    let following_url: String
   
     
  
@@ -20,6 +22,8 @@ struct User: Decodable, Identifiable {
     enum CodingKeys: String, CodingKey {
         case login = "login"
         case avatarUrl = "avatar_url"
+        case followers_url = "followers_url"
+        case following_url = "following_url"
     }
 }
 

@@ -87,12 +87,14 @@ class UsersManager: ObservableObject {
         guard let url = URL(string: "https://api.github.com/search/users?q=\(query)&page=\(page)&per_page=10") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
+            
         }
+        
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        let token = "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"
+        let token = "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"
         request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
         URLSession.shared.dataTask(with: request) { data, _, error in
@@ -129,6 +131,6 @@ class UsersManager: ObservableObject {
         recentSearches = UserDefaults.standard.array(forKey: "recentSearches") as? [String] ?? []
     }
     
-    //
+    
     
 }
