@@ -12,6 +12,10 @@ struct User: Decodable, Identifiable {
     let id = UUID()
     let login: String
     let avatarUrl: String
+  
+    
+ 
+    
     
     enum CodingKeys: String, CodingKey {
         case login = "login"

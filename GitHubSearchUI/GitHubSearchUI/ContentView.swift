@@ -27,7 +27,7 @@ struct ContentView: View {
                         Spacer()
                     }
                     .padding(.horizontal)
-
+                    
                     ScrollView(.horizontal) {
                         HStack {
                             ForEach(manager.recentSearches, id: \.self) { search in
@@ -91,11 +91,11 @@ struct ContentView: View {
                 }
             }
             .sheet(item: $selectedUser) { user in
-                NavigationView {
-                    UserDetailView(user: user)
-                }
+                UserDetailView(user: user)
             }
         }
     }
 }
+
+
 

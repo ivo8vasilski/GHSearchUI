@@ -128,4 +128,7 @@ class UsersManager: ObservableObject {
     private func loadRecentSearches() {
         recentSearches = UserDefaults.standard.array(forKey: "recentSearches") as? [String] ?? []
     }
+    
+    //
+    
 }
