@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-class UsersManager: ObservableObject {
+class UsersState: ObservableObject {
     // MARK: - Published Properties
     @Published var users: [User] = []
     @Published var searchQuery: String = "" {

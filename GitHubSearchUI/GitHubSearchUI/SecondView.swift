@@ -21,15 +21,15 @@ struct UserDetailView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .blur(radius: 20)
-                            .overlay(Color.black.opacity(0.3)) // Optional overlay for better contrast
-                            .clipped() // Clip the image to avoid overflow
+                            .overlay(Color.black.opacity(0.3))
+                            .clipped()
                     } placeholder: {
                         Color.gray
                             .blur(radius: 20)
                     }
-                    // Increase the height to extend the blur background
+                   
                     .frame(width: UIScreen.main.bounds.width, height: 390)
-                    .clipped() // Clip the image to avoid overflow
+                    .clipped() 
                 }
 
                 // Back Button
@@ -40,11 +40,11 @@ struct UserDetailView: View {
                         Image(systemName: "chevron.left")
                         Text("Back")
                     }
-                    .foregroundColor(.white) // Change the color to white
+                    .foregroundColor(.white)
                     .padding()
                 }
             }
-            .frame(height: 350) // Adjusted to match the background height
+            .frame(height: 350)
 
             // User Avatar
             AsyncImage(url: URL(string: user.avatarUrl)) { image in
@@ -52,20 +52,19 @@ struct UserDetailView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .clipShape(Circle())
-                    .shadow(radius: 10) // 3D effect
+                    .shadow(radius: 10)
             } placeholder: {
                 ProgressView()
             }
             .frame(width: 150, height: 150)
-            .padding(.top, -100) // Move the avatar upwards, over the blurred background
+            .padding(.top, -100)
 
-            // User Login
             Text(user.login)
                 .font(.title)
                 .fontWeight(.bold)
                 .padding(.top, 10)
 
-            // Follower and Following Counts
+            
             HStack(spacing: 20) {
                 VStack {
                     Text("\(user.followers_url)")
@@ -85,11 +84,11 @@ struct UserDetailView: View {
             }
             .padding(.top, 5)
 
-            // Add spacing before the buttons
-            Spacer()
-                .frame(height: 30) // Adjust the height as needed
 
-            // Profile Button
+            Spacer()
+                .frame(height: 30)
+
+           
             Button(action: openUserProfile) {
                 VStack {
                     Text("View")
@@ -106,7 +105,7 @@ struct UserDetailView: View {
             .padding(.horizontal)
             .padding(.top, 10)
 
-            // Repository Button
+            
             Button(action: openUserRepository) {
                 VStack {
                     Text("View")
@@ -118,12 +117,12 @@ struct UserDetailView: View {
                 .background(Color.green)
                 .foregroundColor(.white)
                 .cornerRadius(10)
-                .shadow(radius: 5) // 3D effect
+                .shadow(radius: 5) 
             }
             .padding(.horizontal)
             .padding(.top, 10)
 
-            Spacer() // This spacer pushes everything upwards
+            Spacer()
         }
         .padding()
         .navigationTitle("Details")
@@ -137,10 +136,11 @@ struct UserDetailView: View {
     }
 
     private func openUserRepository() {
-        let repositoryName = "example-repo" // Replace this with the actual repository name or variable
+        let repositoryName = "example-repo"
         
         if let url = URL(string: "https://github.com/\(user.login)/\(repositoryName)") {
             UIApplication.shared.open(url)
         }
     }
 }
+

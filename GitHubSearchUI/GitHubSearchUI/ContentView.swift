@@ -1,13 +1,7 @@
-//
-//  ContentView.swift
-//  GitHubSearchUI
-//
-//  Created by Ivo Vasilski on 20.08.24.
-//
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var manager = UsersManager()
+    @StateObject private var manager = UsersState()
     @State private var selectedUser: User?
 
     var body: some View {
@@ -46,50 +40,42 @@ struct ContentView: View {
                     .padding(.vertical, 5)
                 }
 
-                // List of Users
-                List(manager.users) { user in
-                    HStack {
-                        // User Avatar Thumbnail with Increased Size
-                        AsyncImage(url: URL(string: user.avatarUrl)) { image in
-                            image.resizable()
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .frame(width: 70, height: 70) // Increased from 50x50 to 70x70
-                        .clipShape(Circle())
+                // Handle the error outside the ViewBuilder
+                if let errorMessage = manager.errorMessage {
+                    ErrorView(errorMessage: errorMessage)
+                } else {
+                    List(manager.users) { user in
+                        HStack {
+                            AsyncImage(url: URL(string: user.avatarUrl)) { image in
+                                image.resizable()
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            .frame(width: 70, height: 70)
+                            .clipShape(Circle())
 
-                        // User Login
-                        Text(user.login)
-                            .font(.headline)
-                    }
-                    .onTapGesture {
-                        selectedUser = user
-                    }
-                    .onAppear {
-                        manager.loadMoreUsersIfNeeded(currentUser: user)
-                    }
-                }
-                .navigationTitle("GitHub Search")
-                .overlay(
-                    Group {
-                        if manager.isLoading {
-                            ProgressView("Loading...")
-                                .progressViewStyle(CircularProgressViewStyle())
+                            Text(user.login)
+                                .font(.headline)
                         }
-                    },
-                    alignment: .bottom
-                )
-                .alert(isPresented: Binding<Bool>(
-                    get: { manager.errorMessage != nil },
-                    set: { _ in manager.errorMessage = nil }
-                )) {
-                    Alert(
-                        title: Text("Error"),
-                        message: Text(manager.errorMessage ?? "Unknown error"),
-                        dismissButton: .default(Text("OK"))
-                    )
+                        .onTapGesture {
+                            selectedUser = user
+                        }
+                        .onAppear {
+                            manager.loadMoreUsersIfNeeded(currentUser: user)
+                        }
+                    }
                 }
             }
+            .navigationTitle("GitHub Search") // Apply navigationTitle to a view inside NavigationView
+            .overlay(
+                Group {
+                    if manager.isLoading {
+                        ProgressView("Loading...")
+                            .progressViewStyle(CircularProgressViewStyle())
+                    }
+                },
+                alignment: .bottom
+            )
             .sheet(item: $selectedUser) { user in
                 UserDetailView(user: user)
             }
@@ -98,4 +84,45 @@ struct ContentView: View {
 }
 
 
+enum UserError: Error {
+    case fetchFailed(String)
+}
 
+
+struct ErrorView: View {
+    let errorMessage: String
+
+    var body: some View {
+        VStack {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 80, height: 80)
+                .foregroundColor(.red)
+                .padding()
+
+            Text("Oops, something went wrong!")
+                .font(.title)
+                .fontWeight(.semibold)
+                .padding(.bottom, 5)
+
+            Text(errorMessage)
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+
+            Button(action: {
+                // You can add retry logic here
+            }) {
+                Text("Retry")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding(.top, 20)
+        }
+        .padding()
+    }
+}
